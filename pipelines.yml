@@ -47,7 +47,7 @@ pipelines:
                     - 12
         execution:
           onExecute:
-            - pushd ./app
+            - pushd ./setup/app
             - MODULE="$module" npm run test
             - popd 
 
