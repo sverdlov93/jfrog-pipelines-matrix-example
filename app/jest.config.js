@@ -3,7 +3,7 @@ module.exports = {
     'default',
     [ 'jest-junit', {
       outputDirectory: 'reports',
-      uniqueOutputName: true
+      uniqueOutputName: 'true'
     } ]
   ]
 };
