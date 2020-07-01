@@ -12,3 +12,7 @@ test('5 * 0 = 0', function() {
   expect(mult(5, 0)).toBe(0);
 });
 
+test('5 * 1 = 5', function() {
+  expect(mult(5, 1)).toBe(Infinity);
+});
+
