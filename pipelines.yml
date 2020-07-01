@@ -49,8 +49,9 @@ pipelines:
           onExecute:
             - pushd ./setup/app
             - MODULE="$module" npm run test
-            - ls -ltr ./reports/
-            - popd 
+            - popd
+          onComplete:
+            - save_tests ./setup/app/reports  
 
       - name: output
         type: PostMatrix
