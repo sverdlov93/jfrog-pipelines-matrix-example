@@ -1,0 +1,61 @@
+resources:
+  - name: sample_code
+    type: GitRepo
+    configuration:
+      path: Khazinawaz/matrix-tut
+      branches:
+        include: ^master$
+      gitProvider: nawaz_gh
+
+pipelines:
+  - name: Matrix_Tutorial
+    steps:
+      - name: setup
+        type: PreMatrix
+        configuration:
+          inputResources:
+            - name: sample_code
+        execution:
+          onExecute:
+            - echo "Preparing the code base"
+            - mkdir -p app
+            - cp -r "${res_sample_code_resourcePath}/app/." ./app/
+            - npm install 
+
+
+      - name: test
+        type: Matrix
+        stepMode: Bash
+        configuration:
+          inputSteps:
+            - name: setup
+        stepletMultipliers:
+          environmentVariables:
+            - module: mod_1
+            - module: mod_2
+            - module: mod_3
+            - module: mod_4
+          runtimes:
+            - type: image
+              image:
+                auto:
+                  language: node
+                  versions:
+                    - 12
+        execution:
+          onExecute:
+            - pushd ./app
+            - MODULE="$module" npm run test
+            - popd 
+
+      - name: output
+        type: PostMatrix
+        configuration:
+          inputSteps: 
+            - name: test
+        execution:
+          onExecute:
+            - echo "Executing the output step"
+
+
+              
