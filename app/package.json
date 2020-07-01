@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose ./$MODULE/"
+    "test": "jest --verbose --ci --reporters=default --reporters=jest-junit ./$MODULE/"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,12 @@
     "url": "https://github.com/Khazinawaz/matrix-tut/issues"
   },
   "devDependencies": {
-    "jest": "^24.0.0"
+    "jest": "24.0.0",
+    "jest-junit": "10.0.0"
+  },
+  "jest-junit": {
+    "outputDirectory": "reports",
+    "outputName": "tests.xml"
   },
   "homepage": "https://github.com/Khazinawaz/matrix-tut#readme"
 }
