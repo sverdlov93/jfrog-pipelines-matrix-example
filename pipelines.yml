@@ -24,8 +24,6 @@ pipelines:
             - mkdir -p app
             - cp -r "${res_sample_code_resourcePath}/app/." ./app/
 
-
-
       - name: test
         type: Matrix
         stepMode: Bash
@@ -61,6 +59,8 @@ pipelines:
         execution:
           onExecute:
             - echo "Executing the output step"
+            - ls -ltr ./test/setup/app/reports
+            - save_tests ./test/setup/app/reports
 
 
               
