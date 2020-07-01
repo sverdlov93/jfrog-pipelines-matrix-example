@@ -49,6 +49,7 @@ pipelines:
           onExecute:
             - pushd ./setup/app
             - MODULE="$module" npm run test
+            - ls -ltr ./reports/
             - popd 
 
       - name: output
