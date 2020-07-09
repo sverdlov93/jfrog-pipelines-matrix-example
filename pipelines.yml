@@ -2,10 +2,10 @@ resources:
   - name: sample_code
     type: GitRepo
     configuration:
-      path: Khazinawaz/matrix-tut
+      path: jfrogtw/matrix-tut
       branches:
         include: ^master$
-      gitProvider: nawaz_gh
+      gitProvider: tw_github
 
 pipelines:
   - name: Matrix_Tutorial
