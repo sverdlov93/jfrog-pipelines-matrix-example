@@ -43,6 +43,12 @@ pipelines:
                   language: node
                   versions:
                     - 12
+            - type: image
+              image:
+                auto:
+                  language: node
+                  versions:
+                    - 8.17.0                    
         execution:
           onExecute:
             - pushd ./setup/app
