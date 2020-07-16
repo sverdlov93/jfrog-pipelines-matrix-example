@@ -2,10 +2,10 @@ resources:
   - name: sample_code
     type: GitRepo
     configuration:
-      path: jfrogtw/matrix-tut
+      path: jfrog/jfrog-pipelines-matrix-example
       branches:
         include: ^master$
-      gitProvider: tw_github
+      gitProvider: jfrog_github
 
 pipelines:
   - name: Matrix_Tutorial
