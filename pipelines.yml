@@ -2,10 +2,10 @@ resources:
   - name: sample_code
     type: GitRepo
     configuration:
-      path: jfrog/jfrog-pipelines-matrix-example
+      path: jfrog/jfrog-pipelines-matrix-example      # Change to your own path
       branches:
         include: ^master$
-      gitProvider: jfrog_github
+      gitProvider: jfrog_github                       # Change to your own GitHub integration name
 
 pipelines:
   - name: Matrix_Tutorial
