@@ -1,28 +1,55 @@
+template: true   # required for local templates
+valuesFilePath: ./values.yml
+
 resources:
-  - name: sample_code
+  - name: matrix_repo
     type: GitRepo
     configuration:
-      path: jfrog/jfrog-pipelines-matrix-example      # Change to your own path
+      path: {{ .Values.repoPath }}      # Change to your own path
       branches:
         include: ^master$
-      gitProvider: jfrog_github                       # Change to your own GitHub integration name
+      gitProvider: {{ .Values.gitProvider }}        # Change to your own GitHub integration name
 
 pipelines:
-  - name: Matrix_Tutorial
+  - name: matrix_single_dimension_pipeline
+    steps:
+      - name: matrix_step
+        type: Matrix
+        stepMode: Bash
+        configuration:
+          inputResources:
+            - name: matrix_repo
+        stepletMultipliers:
+          environmentVariables:             # Sets of environment variables for steplets
+            - animal:    dog                # - Set 1
+              mineral:   copper
+              vegetable: carrot
+            - animal:    goat               # - Set 2
+              mineral:   iron
+              vegetable: broccoli
+            - animal:    lizard             # - Set 3
+              mineral:   lead
+
+        execution:
+          onExecute:
+            - echo "Executing matrix step on ${steplet_id}"
+            - echo "Variation animal = ${animal}, mineral = ${mineral}, vegetable = ${vegetable}"
+
+  - name: matrix_two_dimension_pipeline
     steps:
       - name: setup
         type: PreMatrix
         configuration:
           inputResources:
-            - name: sample_code
+            - name: matrix_repo
         execution:
           onExecute:
             - echo "Preparing the code base"
-            - pushd "${res_sample_code_resourcePath}/app"
+            - pushd "${res_matrix_repo_resourcePath}/app"
             - npm install
-            - popd 
+            - popd
             - mkdir -p app
-            - cp -r "${res_sample_code_resourcePath}/app/." ./app/
+            - cp -r "${res_matrix_repo_resourcePath}/app/." ./app/
 
       - name: test
         type: Matrix
@@ -48,25 +75,22 @@ pipelines:
                 auto:
                   language: node
                   versions:
-                    - 8.17.0                    
+                    - 8.17.0
         execution:
           onExecute:
             - pushd ./setup/app
             - MODULE="$module" npm run test
             - popd
           onComplete:
-            - save_tests ./setup/app/reports  
+            - save_tests ./setup/app/reports
 
       - name: output
         type: PostMatrix
         configuration:
-          inputSteps: 
+          inputSteps:
             - name: test
         execution:
           onExecute:
             - echo "Executing the output step"
             - ls -ltr ./test/setup/app/reports
             - save_tests ./test/setup/app/reports
-
-
-              
